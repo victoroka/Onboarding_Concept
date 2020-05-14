@@ -1,6 +1,13 @@
-# onboarding_concept
+# Onboarding Concept
+<p float="left">
+    <img src="resources/onboarding-concept-static.png" alt="Onboarding Concept Static" width="450">
+    <img src="resources/onboarding-concept.gif" alt="Onboarding Concept" width="450">
+</p>
 
-A new Flutter project.
+`left` - design implementation without motion design (static design components/content only).
+
+`right` - full implementation of the design concept with animations.
+
 
 ## Getting Started
 
