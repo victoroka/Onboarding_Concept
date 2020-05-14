@@ -1,8 +1,8 @@
 # Onboarding Concept
 
-Design credit: [Yoonuch Chayhet] (https://dribbble.com/shots/11018841-Onboarding-concept)
+Design credit: [Yoonuch Chayhet](https://dribbble.com/shots/11018841-Onboarding-concept)
 
-Tutorial credit: [Mangirdas Kazlauskas] (https://github.com/MangirdasKazlauskas/flutter-design-challenges) on [Medium] (https://uxdesign.cc/flutter-design-challenge-onboarding-concept-1f5774d55646)
+Tutorial credit: [Mangirdas Kazlauskas](https://github.com/MangirdasKazlauskas/flutter-design-challenges) on [Medium](https://uxdesign.cc/flutter-design-challenge-onboarding-concept-1f5774d55646)
 
 <p float="left">
     <img src="resources/onboarding-concept-static.png" alt="Onboarding Concept Static" width="450">
