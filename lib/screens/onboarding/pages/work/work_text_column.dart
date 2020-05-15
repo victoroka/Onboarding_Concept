@@ -6,7 +6,7 @@ class WorkTextColumn extends StatelessWidget {
   Widget build(BuildContext context) {
     return TextColumn(
       title: 'Work together',
-      text: 'Some cool text about the work page goes here, \nas part of the layout!',
+      text: 'Some cool text about the work page goes here, as part of the layout!',
     );
   }
 }

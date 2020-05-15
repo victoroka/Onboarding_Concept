@@ -6,7 +6,7 @@ class EducationTextColumn extends StatelessWidget {
   Widget build(BuildContext context) {
     return TextColumn(
       title: 'Keep learning',
-      text: 'Some cool text about the education page goes here, \nas part of the layout!',
+      text: 'Some cool text about the education page goes here, as part of the layout!',
     );
   }
 }

@@ -6,7 +6,7 @@ class CommunityTextColumn extends StatelessWidget {
   Widget build(BuildContext context) {
     return TextColumn(
       title: 'Community',
-      text: 'Some cool text about the community page goes here, \nas part of the layout!',
+      text: 'Some cool text about the community page goes here, as part of the layout!',
     );
   }
 }
