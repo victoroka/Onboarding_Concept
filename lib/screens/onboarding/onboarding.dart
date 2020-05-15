@@ -8,6 +8,8 @@ import 'package:onboarding_concept/screens/onboarding/pages/education/index.dart
 import 'package:onboarding_concept/screens/onboarding/pages/onboarding_page.dart';
 import 'package:onboarding_concept/screens/onboarding/pages/work/index.dart';
 import 'package:onboarding_concept/screens/onboarding/widgets/header.dart';
+import 'package:onboarding_concept/screens/onboarding/widgets/next_page_button.dart';
+import 'package:onboarding_concept/screens/onboarding/widgets/onboarding_page_indicator.dart';
 
 class Onboarding extends StatefulWidget {
   @override
@@ -90,6 +92,12 @@ class _OnboardingState extends State<Onboarding> {
               Expanded(
                 child: _getPage(),
               ),
+              OnboardingPageIndicator(
+                currentPage: _current_page,
+                child: NextPageButton(
+                  onPressed: _nextPage,
+                ),
+              )
             ],
           ),
         ),
