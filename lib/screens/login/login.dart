@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:onboarding_concept/constants.dart';
-import 'package:onboarding_concept/screens/login/widgets/blue_top_clipper.dart';
-import 'package:onboarding_concept/screens/login/widgets/grey_top_clipper.dart';
+import 'package:onboarding_concept/screens/login/widgets/clippers/index.dart';
 import 'package:onboarding_concept/screens/login/widgets/header.dart';
 import 'package:onboarding_concept/screens/login/widgets/login_form.dart';
-import 'package:onboarding_concept/screens/login/widgets/white_top_clipper.dart';
 
 class Login extends StatefulWidget {
   final double screenHeight;

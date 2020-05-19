@@ -3,8 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:onboarding_concept/constants.dart';
 import 'package:onboarding_concept/screens/login/login.dart';
 import 'package:onboarding_concept/screens/onboarding/pages/community/index.dart';
-import 'package:onboarding_concept/screens/onboarding/pages/education/education_dark_card_content.dart';
-import 'package:onboarding_concept/screens/onboarding/pages/education/education_light_card_content.dart';
 import 'package:onboarding_concept/screens/onboarding/pages/education/index.dart';
 import 'package:onboarding_concept/screens/onboarding/pages/onboarding_page.dart';
 import 'package:onboarding_concept/screens/onboarding/pages/work/index.dart';
@@ -172,10 +170,22 @@ class _OnboardingState extends State<Onboarding> with TickerProviderStateMixin {
   Future<void> _goToLogin() async {
     await _rippleAnimationController.forward();
     Navigator.of(context).push(
-      MaterialPageRoute(
-        builder: (_) => Login(
+      PageRouteBuilder(
+        pageBuilder: (context, animation, secondaryAnimation) => Login(
           screenHeight: widget.screenHeight,
         ),
+        transitionsBuilder: (context, animation, secondaryAnimation, child) {
+          var begin = Offset(0.0, 1.0);
+          var end = Offset.zero;
+          var curve = Curves.ease;
+
+          var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+
+          return SlideTransition(
+            position: animation.drive(tween),
+            child: child,
+          );
+        },
       ),
     );
   }
