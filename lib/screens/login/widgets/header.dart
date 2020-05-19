@@ -6,13 +6,13 @@ class Header extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: kPaddingL),
+      padding: const EdgeInsets.symmetric(horizontal: kPaddingL + 10.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Logo(
             color: kBlue,
-            size: 48.0,
+            size: 45.0,
           ),
           SizedBox(height: kSpaceM),
           Text(
