@@ -19,3 +19,9 @@ const double kSpaceM = 16.0;
 
 // Assets
 const String kGoogleLogoPath = 'assets/images/google_logo.png';
+
+// Animation
+const Duration kButtonAnimationDuration = Duration(milliseconds: 600);
+const Duration kCardAnimationDuration = Duration(milliseconds: 400);
+const Duration kRippleAnimationDuration = Duration(milliseconds: 400);
+const Duration kLoginAnimationDuration = Duration(milliseconds: 1500);
