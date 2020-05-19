@@ -11,6 +11,7 @@ import 'package:onboarding_concept/screens/onboarding/pages/work/index.dart';
 import 'package:onboarding_concept/screens/onboarding/widgets/header.dart';
 import 'package:onboarding_concept/screens/onboarding/widgets/next_page_button.dart';
 import 'package:onboarding_concept/screens/onboarding/widgets/onboarding_page_indicator.dart';
+import 'package:onboarding_concept/screens/onboarding/widgets/ripple.dart';
 
 class Onboarding extends StatefulWidget {
   final double screenHeight;
@@ -26,10 +27,12 @@ class Onboarding extends StatefulWidget {
 class _OnboardingState extends State<Onboarding> with TickerProviderStateMixin {
   AnimationController _cardsAnimationController;
   AnimationController _pageIndicatorAnimationController;
+  AnimationController _rippleAnimationController;
 
   Animation<Offset> _slideAnimationLightCard;
   Animation<Offset> _slideAnimationDarkCard;
   Animation<double> _pageIndicatorAnimation;
+  Animation<double> _rippleAnimation;
 
   int _current_page = 1;
 
@@ -47,6 +50,12 @@ class _OnboardingState extends State<Onboarding> with TickerProviderStateMixin {
       duration: kButtonAnimationDuration,
     );
 
+    _rippleAnimationController = AnimationController(
+      vsync: this,
+      duration: kRippleAnimationDuration,
+    );
+
+    _setRippleAnimation();
     _setCardsSlideOutAnimation();
     _setPageIndicatorAnimation();
   }
@@ -55,6 +64,7 @@ class _OnboardingState extends State<Onboarding> with TickerProviderStateMixin {
   void dispose() {
     _cardsAnimationController.dispose();
     _pageIndicatorAnimationController.dispose();
+    _rippleAnimationController.dispose();
     super.dispose();
   }
 
@@ -90,6 +100,16 @@ class _OnboardingState extends State<Onboarding> with TickerProviderStateMixin {
       default:
         throw Exception('Page with number $_current_page does not exist.');
     }
+  }
+
+  void _setRippleAnimation() {
+    _rippleAnimation = Tween<double>(
+      begin: 0.0,
+      end: widget.screenHeight,
+    ).animate(CurvedAnimation(
+      parent: _rippleAnimationController,
+      curve: Curves.easeIn,
+    ));
   }
 
   void _setCardsSlideInAnimation() {
@@ -149,10 +169,13 @@ class _OnboardingState extends State<Onboarding> with TickerProviderStateMixin {
     });
   }
 
-  void _goToLogin() {
+  Future<void> _goToLogin() async {
+    await _rippleAnimationController.forward();
     Navigator.of(context).push(
       MaterialPageRoute(
-        builder: (_) => Login(),
+        builder: (_) => Login(
+          screenHeight: widget.screenHeight,
+        ),
       ),
     );
   }
@@ -187,7 +210,7 @@ class _OnboardingState extends State<Onboarding> with TickerProviderStateMixin {
         break;
       case 3:
         if (_pageIndicatorAnimation.status == AnimationStatus.completed) {
-          _goToLogin();
+          await _goToLogin();
         }
         break;
     }
@@ -197,33 +220,45 @@ class _OnboardingState extends State<Onboarding> with TickerProviderStateMixin {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: kBlue,
-      body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.all(kPaddingL),
-          child: Column(
-            children: <Widget>[
-              Header(
-                onSkip: _goToLogin,
+      body: Stack(
+        children: <Widget>[
+          SafeArea(
+            child: Padding(
+              padding: const EdgeInsets.all(kPaddingL),
+              child: Column(
+                children: <Widget>[
+                  Header(
+                    onSkip: () async => await _goToLogin(),
+                  ),
+                  Expanded(
+                    child: _getPage(),
+                  ),
+                  AnimatedBuilder(
+                    animation: _pageIndicatorAnimation,
+                    child: NextPageButton(
+                      onPressed: () async => await _nextPage(),
+                    ),
+                    builder: (_, Widget child) {
+                      return OnboardingPageIndicator(
+                        angle: _pageIndicatorAnimation.value,
+                        currentPage: _current_page,
+                        child: child,
+                      );
+                    },
+                  ),
+                ],
               ),
-              Expanded(
-                child: _getPage(),
-              ),
-              AnimatedBuilder(
-                animation: _pageIndicatorAnimation,
-                child: NextPageButton(
-                  onPressed: _nextPage,
-                ),
-                builder: (_, Widget child) {
-                  return OnboardingPageIndicator(
-                    angle: _pageIndicatorAnimation.value,
-                    currentPage: _current_page,
-                    child: child,
-                  );
-                },
-              ),
-            ],
+            ),
           ),
-        ),
+          AnimatedBuilder(
+            animation: _rippleAnimation,
+            builder: (_, Widget child) {
+              return Ripple(
+                radius: _rippleAnimation.value,
+              );
+            },
+          )
+        ],
       ),
     );
   }

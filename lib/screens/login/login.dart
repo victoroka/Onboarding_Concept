@@ -7,6 +7,12 @@ import 'package:onboarding_concept/screens/login/widgets/login_form.dart';
 import 'package:onboarding_concept/screens/login/widgets/white_top_clipper.dart';
 
 class Login extends StatefulWidget {
+  final double screenHeight;
+
+  const Login({
+    @required this.screenHeight,
+  }) : assert(screenHeight != null);
+
   @override
   _LoginState createState() => _LoginState();
 }
@@ -14,8 +20,8 @@ class Login extends StatefulWidget {
 class _LoginState extends State<Login> {
   @override
   Widget build(BuildContext context) {
-    var screenHeight = MediaQuery.of(context).size.height - MediaQuery.of(context).padding.top;
-    var boxHeight = screenHeight / 6;
+    var height = MediaQuery.of(context).size.height - MediaQuery.of(context).padding.top;
+    var boxHeight = height / 6;
 
     return Scaffold(
       resizeToAvoidBottomInset: false,
