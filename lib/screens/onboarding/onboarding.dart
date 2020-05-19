@@ -1,3 +1,4 @@
+import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:onboarding_concept/constants.dart';
 import 'package:onboarding_concept/screens/login/login.dart';
@@ -24,8 +25,11 @@ class Onboarding extends StatefulWidget {
 
 class _OnboardingState extends State<Onboarding> with TickerProviderStateMixin {
   AnimationController _cardsAnimationController;
+  AnimationController _pageIndicatorAnimationController;
+
   Animation<Offset> _slideAnimationLightCard;
   Animation<Offset> _slideAnimationDarkCard;
+  Animation<double> _pageIndicatorAnimation;
 
   int _current_page = 1;
 
@@ -38,12 +42,19 @@ class _OnboardingState extends State<Onboarding> with TickerProviderStateMixin {
       duration: kCardAnimationDuration,
     );
 
+    _pageIndicatorAnimationController = AnimationController(
+      vsync: this,
+      duration: kButtonAnimationDuration,
+    );
+
     _setCardsSlideOutAnimation();
+    _setPageIndicatorAnimation();
   }
 
   @override
   void dispose() {
     _cardsAnimationController.dispose();
+    _pageIndicatorAnimationController.dispose();
     super.dispose();
   }
 
@@ -121,6 +132,23 @@ class _OnboardingState extends State<Onboarding> with TickerProviderStateMixin {
     });
   }
 
+  void _setPageIndicatorAnimation({bool isClockwiseAnimation = true}) {
+    var multiplicator = isClockwiseAnimation ? 2 : -2;
+
+    setState(() {
+      _pageIndicatorAnimation = Tween(
+        begin: 0.0,
+        end: multiplicator * pi,
+      ).animate(
+        CurvedAnimation(
+          parent: _pageIndicatorAnimationController,
+          curve: Curves.easeIn,
+        ),
+      );
+      _pageIndicatorAnimationController.reset();
+    });
+  }
+
   void _goToLogin() {
     Navigator.of(context).push(
       MaterialPageRoute(
@@ -138,20 +166,29 @@ class _OnboardingState extends State<Onboarding> with TickerProviderStateMixin {
   Future<void> _nextPage() async {
     switch (_current_page) {
       case 1:
-        await _cardsAnimationController.forward();
-        _setNextPage(2);
-        _setCardsSlideInAnimation();
-        await _cardsAnimationController.forward();
-        _setCardsSlideOutAnimation();
+        if (_pageIndicatorAnimation.status == AnimationStatus.dismissed) {
+          _pageIndicatorAnimationController.forward();
+          await _cardsAnimationController.forward();
+          _setNextPage(2);
+          _setCardsSlideInAnimation();
+          await _cardsAnimationController.forward();
+          _setCardsSlideOutAnimation();
+          _setPageIndicatorAnimation(isClockwiseAnimation: false);
+        }
         break;
       case 2:
-        await _cardsAnimationController.forward();
-        _setNextPage(3);
-        _setCardsSlideInAnimation();
-        await _cardsAnimationController.forward();
+        if (_pageIndicatorAnimation.status == AnimationStatus.dismissed) {
+          _pageIndicatorAnimationController.forward();
+          await _cardsAnimationController.forward();
+          _setNextPage(3);
+          _setCardsSlideInAnimation();
+          await _cardsAnimationController.forward();
+        }
         break;
       case 3:
-        _goToLogin();
+        if (_pageIndicatorAnimation.status == AnimationStatus.completed) {
+          _goToLogin();
+        }
         break;
     }
   }
@@ -171,12 +208,19 @@ class _OnboardingState extends State<Onboarding> with TickerProviderStateMixin {
               Expanded(
                 child: _getPage(),
               ),
-              OnboardingPageIndicator(
-                currentPage: _current_page,
+              AnimatedBuilder(
+                animation: _pageIndicatorAnimation,
                 child: NextPageButton(
                   onPressed: _nextPage,
                 ),
-              )
+                builder: (_, Widget child) {
+                  return OnboardingPageIndicator(
+                    angle: _pageIndicatorAnimation.value,
+                    currentPage: _current_page,
+                    child: child,
+                  );
+                },
+              ),
             ],
           ),
         ),

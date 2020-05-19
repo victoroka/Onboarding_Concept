@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:onboarding_concept/constants.dart';
 import 'package:onboarding_concept/screens/onboarding/widgets/cards_stack.dart';
 
 class OnboardingPage extends StatelessWidget {
@@ -37,7 +38,10 @@ class OnboardingPage extends StatelessWidget {
         SizedBox(
           height: number % 2 == 1 ? 50.0 : 25.0,
         ),
-        textColumn,
+        AnimatedSwitcher(
+          duration: kCardAnimationDuration,
+          child: textColumn,
+        ),
       ],
     );
   }
